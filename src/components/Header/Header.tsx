@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
-import {ethers} from "ethers";
+import { ethers } from "ethers";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import { setAddress, setBalance } from "../../redux/wallet.slice";
 import Web3Modal from "web3modal";
 
 export const Header = () => {
+  const dispatch = useDispatch();
   const [connected, setConnected] = useState(false);
   const [signer, setSigner] = useState<JsonRpcSigner>();
 
@@ -30,15 +33,19 @@ export const Header = () => {
   };
   useEffect(() => {
     const getBalance = async () => {
-      if (!signer) return
+      if (!signer) return;
       const balance = await signer.getBalance();
-      const formattedBalance = parseFloat(ethers.formatEther(balance.toString())).toFixed(3);
-      console.log("Balance: ", formattedBalance);
+      const formattedBalance = parseFloat(
+        ethers.formatEther(balance.toString())
+      ).toFixed(3);
       const address = await signer.getAddress();
+      dispatch(setAddress(address));
+      dispatch(setBalance(formattedBalance));
+      console.log("Balance: ", formattedBalance);
       console.log("Address: " + address);
     };
-    getBalance()
-  }, [signer]);
+    getBalance();
+  }, [signer, dispatch]);
 
   return (
     <header className={styles.header}>

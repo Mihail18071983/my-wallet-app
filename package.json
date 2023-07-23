@@ -13,10 +13,12 @@
     "@ethersproject/providers": "^5.7.2",
     "@ethersproject/units": "^5.7.0",
     "@metamask/detect-provider": "^2.0.0",
+    "@reduxjs/toolkit": "^1.9.5",
     "ethers": "^6.6.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
+    "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.2",
     "sass": "^1.64.0",
     "web3modal": "^1.9.12"
