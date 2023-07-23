@@ -8,7 +8,7 @@ export const UserPage = () => {
     <>
       <Header />
       <section className={styles.container}>
-        <Form />
+        <Form connected={true} />
       </section>
     </>
   );

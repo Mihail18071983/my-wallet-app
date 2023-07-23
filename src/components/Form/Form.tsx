@@ -4,13 +4,18 @@ import { useForm } from "react-hook-form";
 
 import { DevTool } from "@hookform/devtools";
 
-export const Form = () => {
+type IProps = {
+  connected: boolean;
+}
+
+export const Form = ({connected}:IProps) => {
+
   const {
     register,
     handleSubmit,
     control,
     reset,
-    formState: { errors, isSubmitting },
+    formState: {  isSubmitting },
   } = useForm({
     defaultValues: { wallet_address: "", amount: "0.01" },
   });
@@ -25,16 +30,22 @@ export const Form = () => {
     reset();
   }
 
+  if(!connected) {
+    return <p>Please connect your wallet</p>;
+  }
+
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitHandler)} className={styles.form}>
-        <input
+        <input disabled={!connected}
           className={styles.input}
           {...register("wallet_address", { required: true, minLength: 10 })}
           type="text"
           placeholder="wallet_address"
         />
         <input
+          disabled={!connected}
           className={styles.input}
           {...register("amount", {
             required: true,

@@ -5,8 +5,12 @@
   gap: 10px;
 }
 
-.imput {
-    color:black
+.input {
+    color:black;
+    &:disabled {
+      opacity: 0.5;
+    }
+    
 }
 
 .btn {
