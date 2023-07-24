@@ -37,7 +37,7 @@ export const Header = () => {
       const balance = await signer.getBalance();
       const formattedBalance = parseFloat(
         ethers.formatEther(balance.toString())
-      ).toFixed(3);
+      ).toFixed(2);
       const address = await signer.getAddress();
       dispatch(setAddress(address));
       dispatch(setBalance(formattedBalance));

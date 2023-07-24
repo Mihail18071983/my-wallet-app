@@ -1,61 +1,71 @@
-import * as React from "react";
+import {  useEffect } from "react";
 import styles from "./Form.module.scss";
 import { useForm } from "react-hook-form";
-
 import { DevTool } from "@hookform/devtools";
+import { useWallet } from "../../hooks/useWallet";
 
 type IProps = {
   connected: boolean;
-}
+};
 
-export const Form = ({connected}:IProps) => {
-
+export const Form = ({ connected }: IProps) => {
+  const { selectedAddress, selectedBalance } = useWallet();
   const {
     register,
     handleSubmit,
     control,
     reset,
-    formState: {  isSubmitting },
+    formState: { isSubmitting },
+    setValue,
   } = useForm({
-    defaultValues: { wallet_address: "", amount: "0.01" },
+    defaultValues: { wallet_address: "", balance: "" },
   });
 
   type UserData = {
     wallet_address: string;
-    amount: string;
+    balance: string;
   };
-  const onSubmitHandler = (data: UserData) => {
-    const amountValue = parseFloat(data.amount );
-    console.log({ ...data, amount: amountValue });
-    reset();
-  }
 
-  if(!connected) {
+  useEffect(() => {
+    setValue("wallet_address", selectedAddress);
+    setValue("balance", selectedBalance);
+  }, [selectedAddress, selectedBalance, setValue]);
+
+  const onSubmitHandler = (data: UserData) => {
+    const balanceValue = parseFloat(data.balance);
+    console.log({ ...data, balance: balanceValue });
+    reset();
+  };
+
+  if (!connected) {
     return <p>Please connect your wallet</p>;
   }
-
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitHandler)} className={styles.form}>
-        <input disabled={!connected}
+        <input
+          disabled={!connected}
           className={styles.input}
           {...register("wallet_address", { required: true, minLength: 10 })}
           type="text"
           placeholder="wallet_address"
+          defaultValue={selectedAddress}
         />
         <input
           disabled={!connected}
           className={styles.input}
-          {...register("amount", {
+          {...register("balance", {
             required: true,
             pattern: {
               value: /^\d+(\.\d{1,2})?$/,
-              message: "Please enter a valid amount with up to two decimal places.",
+              message:
+                "Please enter a valid balance with up to two decimal places.",
             },
           })}
-          type="text" 
-          placeholder="amount"
+          type="text"
+          placeholder="balance"
+          defaultValue={selectedBalance}
         />
         <button className={styles.btn} type="submit">
           {isSubmitting ? "...Loading" : "Send"}
