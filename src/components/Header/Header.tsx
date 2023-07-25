@@ -9,8 +9,9 @@ import Web3Modal from "web3modal";
 
 export const Header = () => {
   const dispatch = useDispatch();
-  const [connected, setConnected] = useState(false);
   const [signer, setSigner] = useState<JsonRpcSigner>();
+  const [adressWallet, setAddressWallet] = useState("");
+  const [balanceWallet, setBalanceWallet] = useState("");
 
   const connectWallet = async () => {
     try {
@@ -41,8 +42,8 @@ export const Header = () => {
       const address = await signer.getAddress();
       dispatch(setAddress(address));
       dispatch(setBalance(formattedBalance));
-      console.log("Balance: ", formattedBalance);
-      console.log("Address: " + address);
+      setAddressWallet(address);
+      setBalanceWallet(formattedBalance);
     };
     getBalance();
   }, [signer, dispatch]);
@@ -53,9 +54,16 @@ export const Header = () => {
         <Link to="/" className={styles.logo}>
           Logo
         </Link>
-        <button onClick={connectWallet} className={styles.btn}>
-          Connect wallet
-        </button>
+        {adressWallet && balanceWallet ? (
+          <div>
+            <p>{adressWallet}</p>
+            <p>{balanceWallet}</p>
+          </div>
+        ) : (
+          <button onClick={connectWallet} className={styles.btn}>
+            Connect wallet
+          </button>
+        )}
       </div>
     </header>
   );
