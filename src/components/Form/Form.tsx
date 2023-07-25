@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import {  Web3Provider } from "@ethersproject/providers";
+import { Web3Provider } from "@ethersproject/providers";
 import styles from "./Form.module.scss";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
@@ -18,7 +18,7 @@ export const Form = ({ isConnected }: IProps) => {
     register,
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
     setValue,
   } = useForm({
     defaultValues: {
@@ -41,17 +41,20 @@ export const Form = ({ isConnected }: IProps) => {
     const recipient = data.wallet_address;
     const amount = data.amount;
     const parsedAmount = ethers.parseEther(amount);
-    try {
-      const provider = new Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const tx = await signer.sendTransaction({
-        to: recipient,
-        value: parsedAmount
-      })
-      console.log("Transaction successful!", tx);
-    } catch (err) {
-      console.error(err);
+    if (parsedAmount > 0) {
+      try {
+        const provider = new Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const tx = await signer.sendTransaction({
+          to: recipient,
+          value: parsedAmount,
+        });
+        console.log("Transaction successful!", tx);
+      } catch (err) {
+        console.error(err);
+      }
     }
+    else console.log("Enter correct amount");
   };
 
   if (!isConnected) {
@@ -67,11 +70,18 @@ export const Form = ({ isConnected }: IProps) => {
           id="wallet_address"
           disabled={!isConnected}
           className={styles.input}
-          {...register("wallet_address", { required: true, minLength: 10 })}
+          {...register("wallet_address", {
+            required: true,
+            pattern: {
+              value: /^0x[a-fA-F0-9]{40}$/i,
+              message: "Please enter a valid address wallet",
+            },
+          })}
           type="text"
           placeholder="wallet_address"
           defaultValue=""
         />
+        {errors.wallet_address && <p>{errors.wallet_address.message}</p>}
         <label htmlFor="amount">AMOUNT TO SEND</label>
         <input
           id="amount"
@@ -89,6 +99,7 @@ export const Form = ({ isConnected }: IProps) => {
           placeholder="balance"
           defaultValue={selectedBalance}
         />
+        {errors.amount && <p>{errors.amount.message}</p>}
 
         <button className={styles.btn} type="submit">
           {isSubmitting ? "...Loading" : "Transfer"}
