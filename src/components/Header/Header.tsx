@@ -1,5 +1,6 @@
 import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
+import { truncateAddress } from "../../utils/truncateAddress";
 // import Web3Modal from "web3modal";
 
 interface IProps {
@@ -9,6 +10,7 @@ interface IProps {
 }
 
 export const Header = ({ onConnectWallet, addressWalet, balanceWallet }: IProps) => {
+  const truncated = truncateAddress(addressWalet);
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -17,7 +19,7 @@ export const Header = ({ onConnectWallet, addressWalet, balanceWallet }: IProps)
         </Link>
         {addressWalet && balanceWallet ? (
           <div>
-            <p>{addressWalet}</p>
+            <p>{truncated}</p>
             <p>{balanceWallet}</p>
           </div>
         ) : (
