@@ -53,8 +53,7 @@ export const Form = ({ isConnected }: IProps) => {
       } catch (err) {
         console.error(err);
       }
-    }
-    else console.log("Enter correct amount");
+    } else console.log("Enter correct amount");
   };
 
   if (!isConnected) {
@@ -65,41 +64,50 @@ export const Form = ({ isConnected }: IProps) => {
     <>
       <form onSubmit={handleSubmit(onSubmitHandler)} className={styles.form}>
         <h2 className={styles.title}>TRANSFER FORM</h2>
-        <label htmlFor="wallet_address">RECEIVER ADDRESS</label>
-        <input
-          id="wallet_address"
-          disabled={!isConnected}
-          className={styles.input}
-          {...register("wallet_address", {
-            required: true,
-            pattern: {
-              value: /^0x[a-fA-F0-9]{40}$/i,
-              message: "Please enter a valid address wallet",
-            },
-          })}
-          type="text"
-          placeholder="wallet_address"
-          defaultValue=""
-        />
-        {errors.wallet_address && <p>{errors.wallet_address.message}</p>}
-        <label htmlFor="amount">AMOUNT TO SEND</label>
-        <input
-          id="amount"
-          disabled={!isConnected}
-          className={styles.input}
-          {...register("amount", {
-            required: true,
-            pattern: {
-              value: /^\d+(\.\d{1,2})?$/,
-              message:
-                "Please enter a valid balance with up to two decimal places.",
-            },
-          })}
-          type="text"
-          placeholder="balance"
-          defaultValue={selectedBalance}
-        />
-        {errors.amount && <p>{errors.amount.message}</p>}
+        <label className={styles.address} htmlFor="wallet_address">
+          RECEIVER ADDRESS
+          <input
+            id="wallet_address"
+            disabled={!isConnected}
+            className={styles.input}
+            {...register("wallet_address", {
+              required: true,
+              pattern: {
+                value: /^0x[a-fA-F0-9]{40}$/i,
+                message: "Please enter a valid address wallet!",
+              },
+            })}
+            type="text"
+            placeholder="wallet_address"
+            defaultValue=""
+          />
+          {errors.wallet_address && (
+            <p className={styles.errMessage}>{errors.wallet_address.message}</p>
+          )}
+        </label>
+
+        <label className={styles.balance} htmlFor="amount">
+          AMOUNT TO SEND
+          <input
+            id="amount"
+            disabled={!isConnected}
+            className={styles.input}
+            {...register("amount", {
+              required: true,
+              pattern: {
+                value: /^\d+(\.\d{1,2})?$/,
+                message:
+                  "Please enter a valid balance with up to two decimal places!",
+              },
+            })}
+            type="text"
+            placeholder="balance"
+            defaultValue={selectedBalance}
+          />
+          {errors.amount && (
+            <p className={styles.errMessage}>{errors.amount.message}</p>
+          )}
+        </label>
 
         <button className={styles.btn} type="submit">
           {isSubmitting ? "...Loading" : "Transfer"}

@@ -18,7 +18,7 @@ export const Header = ({
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link to="/" className={styles.logo}>
+        <Link to="https://github.com/Mihail18071983/my-wallet-app" className={styles.logo}>
           CRYPTO
         </Link>
         {addressWalet && balanceWallet ? (
