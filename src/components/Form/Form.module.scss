@@ -2,17 +2,62 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+}
+
+.title {
+  margin-left: auto;
+  margin-right: auto;
+  color: #591313;
+  padding: 5px 10px;
+  border-radius: 5px;
+  max-width: 200px;
+  text-align: center;
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 1199px) {
+    font-size: 20px;
+  }
+  @media screen and (min-width: 1200px) {
+    font-size: 24px;
+  }
 }
 
 .input {
-    color:black;
-    &:disabled {
-      opacity: 0.5;
-    }
-    
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: black;
+  &:disabled {
+    opacity: 0.5;
+  }
+  &:focus {
+    outline: none;
+    border: 1px solid #9c7334;
+  }
 }
 
 .btn {
-    color:#fff
+  display: flex;
+  color: #fff;
+  max-width: 100px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.message {
+  color: #131313;
+  text-align: center;
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1199px) {
+    font-size: 20px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    font-size: 24px;
+  }
 }

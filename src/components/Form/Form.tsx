@@ -58,13 +58,13 @@ export const Form = ({ isConnected }: IProps) => {
   };
 
   if (!isConnected) {
-    return <p>Please connect your wallet</p>;
+    return <p className={styles.message}>Please, connect your wallet!</p>;
   }
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitHandler)} className={styles.form}>
-        <h2>Transfer form</h2>
+        <h2 className={styles.title}>TRANSFER FORM</h2>
         <label htmlFor="wallet_address">RECEIVER ADDRESS</label>
         <input
           id="wallet_address"

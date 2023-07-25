@@ -1,10 +1,11 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: rgb(40, 48, 48);
 }
 
 .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-left: auto;
   margin-right: auto;
   padding: 10px;
@@ -31,6 +32,33 @@
 }
 
 .btn {
-    color:#fff;
+  color: #fff;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
 
+.wallet_icon {
+  color: purple;
+}
+
+.address,
+.balance {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.wrapper {
+  padding: 5px 10px;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    gap: 50px;
+  }
+}
+
+.address_value, .balance_value {
+padding: 7px;
+background-color:rgb(65, 84, 84);
+border-radius: 5px;
 }
