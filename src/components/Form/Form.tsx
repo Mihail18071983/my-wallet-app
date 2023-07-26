@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useWallet } from "../../hooks/useWallet";
 import { ethers } from "ethers";
+import { ColorRing } from "react-loader-spinner";
 
 const RECIPIENT_WALLET = "0xbC78292cE96C876156212069069Ef9563CdE3796";
 
@@ -110,7 +111,19 @@ export const Form = ({ isConnected }: IProps) => {
         </label>
 
         <button className={styles.btn} type="submit">
-          {isSubmitting ? "...Loading" : "Transfer"}
+          {isSubmitting ? (
+            <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="blocks-loading"
+              wrapperStyle={{}}
+              wrapperClass="blocks-wrapper"
+              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            />
+          ) : (
+            "Transfer"
+          )}
         </button>
       </form>
       <DevTool control={control} />
