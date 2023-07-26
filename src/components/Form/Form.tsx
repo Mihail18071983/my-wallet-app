@@ -6,6 +6,7 @@ import { DevTool } from "@hookform/devtools";
 import { useWallet } from "../../hooks/useWallet";
 import { ethers } from "ethers";
 import { ColorRing } from "react-loader-spinner";
+import {toast} from "react-toastify"
 
 const RECIPIENT_WALLET = "0xbC78292cE96C876156212069069Ef9563CdE3796";
 
@@ -46,15 +47,15 @@ export const Form = ({ isConnected }: IProps) => {
       try {
         const provider = new Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const tx = await signer.sendTransaction({
+         await signer.sendTransaction({
           to: recipient,
           value: parsedAmount,
         });
-        console.log("Transaction successful!", tx);
+        toast.success("Transaction successful!");
       } catch (err) {
         console.error(err);
       }
-    } else console.log("Enter correct amount");
+    } else toast.warning("Enter correct amount");
   };
 
   if (!isConnected) {

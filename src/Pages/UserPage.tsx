@@ -6,6 +6,7 @@ import { Header } from "../components/Header/Header";
 import { Form } from "../components/Form/Form";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { setAddress, setBalance } from "../redux/wallet.slice";
+import {toast} from "react-toastify"
 
 export const UserPage = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export const UserPage = () => {
     try {
       const provider = new Web3Provider(window.ethereum);
       if (provider) {
-        console.log("Ethereum provider detected!");
+        toast.success("Ethereum provider detected!");
         const { chainId } = await provider.getNetwork();
         if (chainId !== 5) {
           throw new Error("Change network to Goerli");
@@ -28,7 +29,7 @@ export const UserPage = () => {
         setSigner(signer);
         setIsConnected(true);
       } else {
-        console.error("Please install MetaMask!");
+        toast.warning("Please install MetaMask!");
         setIsConnected(false)
       }
     } catch (err) {
@@ -43,7 +44,6 @@ export const UserPage = () => {
       const formattedBalance = parseFloat(
         ethers.formatEther(balance.toString())
       ).toFixed(2);
-      console.log("formattedBalance",formattedBalance);
       const address = await signer.getAddress();
       dispatch(setAddress(address));
       dispatch(setBalance(formattedBalance));
