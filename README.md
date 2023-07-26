@@ -11,8 +11,8 @@ For launching application you just need moving to the https://my-wallet-app-pear
 For using  application you just need to install the metamask extantion in your browther  on desktop or (and) mobile device. Then you need to create a new wallet or restore existing regarding your mnemonic phrase.
 For completing this operation you can plug your wallet clicking button "Connect wallet".
 By default you will get a screen with next walues 
-<img width="200" src="/public/form.png" alt="form screenhost">
+- <img width="200" src="/public/form.png" alt="form screenhost">
 In RECEIVER ADDRESS you will see the wallet which displays the by default. You can send crypto currency to this wallet or enter another address. 
 In "AMOUNT TO SEND" you can send amount of tokens for transaction. The value can't be less than 0.01.
 If you try to enter incorrect values into the input fields you will get a worning bellow when you try submitting form.
-<img width="200" src="/public/form_with_errors.png" alt="form with errors screenhost ">
+- <img width="200" src="/public/form_with_errors.png" alt="form with errors screenhost ">
