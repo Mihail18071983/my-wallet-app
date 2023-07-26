@@ -105,7 +105,6 @@ export const Form = ({ isConnected }: IProps) => {
             })}
             type="text"
             placeholder="balance"
-            defaultValue={selectedBalance}
           />
           {errors.amount && (
             <p className={styles.errMessage}>{errors.amount.message}</p>
