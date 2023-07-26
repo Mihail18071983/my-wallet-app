@@ -10,4 +10,4 @@ For launching application you just need moving to the https://my-wallet-app-pear
 
 For using  application you just need to install the metamask extantion in your browther  on desktop or (and) mobile device. Then you need to create a new wallet or restore existing regarding your mnemonic phrase.
 For completing this operation you can plug your wallet clicking button "Connect wallet".
-By default you will get a screen with next walues <img src="/public/form.png" alt="form screenhost">
+By default you will get a screen with next walues <img width="200" src="/public/form.png" alt="form screenhost">
