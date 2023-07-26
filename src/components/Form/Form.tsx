@@ -6,7 +6,8 @@ import { DevTool } from "@hookform/devtools";
 import { useWallet } from "../../hooks/useWallet";
 import { ethers } from "ethers";
 import { ColorRing } from "react-loader-spinner";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify"
+
 
 const RECIPIENT_WALLET = "0xbC78292cE96C876156212069069Ef9563CdE3796";
 
