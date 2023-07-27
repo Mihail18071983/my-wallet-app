@@ -7,14 +7,7 @@ import { Form } from "../components/Form/Form";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { setAddress, setBalance } from "../redux/wallet.slice";
 import { toast } from "react-toastify";
-
-interface IAccount {
-  account: string;
-}
-
-// interface IAccounts {
-//   accounts: string[];
-// }
+import detectEthereumProvider from "@metamask/detect-provider";
 
 export const UserPage = () => {
   const dispatch = useDispatch();
@@ -39,23 +32,20 @@ export const UserPage = () => {
     getBalance();
   }, [signer, dispatch]);
 
-  // useEffect(() => {
-  //   getCurrentWalletConnected();
-  //   addWalletListener();
-  // }, [addressWalet]);
-
-  const connectWallet = async ({ account }: IAccount) => {
-    try {
-      const provider = new Web3Provider(window.ethereum);
-      if (provider) {
+  const connectWallet = async () => {
+    try {  
+      const provider = await detectEthereumProvider();
+      if (provider && provider === window.ethereum) {
+          const ethresProvider = new Web3Provider(provider);
         toast.success("Ethereum provider detected!");
-        const { chainId } = await provider.getNetwork();
-        if (chainId !== 5) {
+        // const { chainId } = await provider.getNetwork();
+        const  chainId = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+        if (+chainId !== 5) {
           throw new Error("Change network to Goerli");
         }
-        // await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner(account);
-
+        const signer = ethresProvider.getSigner();
         setSigner(signer);
         setIsConnected(true);
       } else {
@@ -68,72 +58,10 @@ export const UserPage = () => {
     }
   };
 
-  const handleEthereum = async () => {
-    if (window.ethereum && window.ethereum.isMetaMask) {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const account = accounts[0];
-      connectWallet(account);
-    } else {
-      toast.warning("Please install MetaMask!");
-    }
-  };
-  const connectMobileWallet = async () => {
-    if (window.ethereum) {
-      if (window.ethereum && window.ethereum.isMetaMask) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        const account = accounts[0];
-        connectWallet(account);
-      } else {
-        toast.warning("Please install MetaMask!");
-      }
-    } else {
-      window.addEventListener("ethereum#initialized", handleEthereum, {
-        once: true,
-      });
-      setTimeout(handleEthereum, 3000);
-    }
-  };
-
-  // const getCurrentWalletConnected = async () => {
-  //   if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
-  //     try {
-  //       const accounts = await window.ethereum.request({
-  //         method: "eth_accounts",
-  //       });
-  //       if (accounts.length > 0) {
-  //         setAddressWallet(accounts[0]);
-  //       } else {
-  //         toast.warning("Connect to MetaMask using the Connect button");
-  //       }
-  //     } catch (err) {
-  //       toast.error("Connection failed");
-  //     }
-  //   } else {
-  //     /* MetaMask is not installed */
-  //     toast.warning("Please install MetaMask");
-  //   }
-  // };
-
-  // const addWalletListener = async () => {
-  //   if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
-  //     window.ethereum.on("accountsChanged", ({ accounts }: IAccounts) => {
-  //       setAddressWallet(accounts[0]);
-  //     });
-  //   } else {
-  //     /* MetaMask is not installed */
-  //     setAddressWallet("");
-  //     toast.warning("Please install MetaMask");
-  //   }
-  // };
-
   return (
     <>
       <Header
-        onConnectWallet={connectMobileWallet}
+        onConnectWallet={connectWallet}
         addressWalet={addressWalet}
         balanceWallet={balanceWallet}
       />
