@@ -6,7 +6,11 @@ import { Header } from "../components/Header/Header";
 import { Form } from "../components/Form/Form";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { setAddress, setBalance } from "../redux/wallet.slice";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify"
+
+interface IAccount {
+  account: string;
+}
 
 export const UserPage = () => {
   const dispatch = useDispatch();
@@ -15,7 +19,7 @@ export const UserPage = () => {
   const [balanceWallet, setBalanceWallet] = useState("");
   const [isConnected, setIsConnected] = useState(false)
 
-  const connectWallet = async () => {
+  const connectWallet = async ({ account }:IAccount) => {
     try {
       const provider = new Web3Provider(window.ethereum);
       if (provider) {
@@ -24,8 +28,9 @@ export const UserPage = () => {
         if (chainId !== 5) {
           throw new Error("Change network to Goerli");
         }
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
+        // await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner(account);
+       
         setSigner(signer);
         setIsConnected(true);
       } else {
@@ -33,10 +38,23 @@ export const UserPage = () => {
         setIsConnected(false)
       }
     } catch (err) {
-      console.error("Error connecting wallet:", err);
+      toast.error("Error connecting wallet");
       setIsConnected(false)
     }
   };
+
+  const connectMobileWallet = async () => {
+  if (window.ethereum) {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const account = accounts[0];
+    connectWallet(account);
+  } else {
+
+    toast.warning('Please install MetaMask!');
+
+  }
+
+}
   useEffect(() => {
     const getBalance = async () => {
       if (!signer) return;
@@ -56,7 +74,7 @@ export const UserPage = () => {
   return (
     <>
       <Header
-        onConnectWallet={connectWallet}
+        onConnectWallet={connectMobileWallet}
         addressWalet={addressWalet}
         balanceWallet={balanceWallet}
       />
