@@ -12,9 +12,9 @@ interface IAccount {
   account: string;
 }
 
-interface IAccounts {
-  accounts: string[]
-}
+// interface IAccounts {
+//   accounts: string[];
+// }
 
 export const UserPage = () => {
   const dispatch = useDispatch();
@@ -39,10 +39,10 @@ export const UserPage = () => {
     getBalance();
   }, [signer, dispatch]);
 
-  useEffect(() => {
-    getCurrentWalletConnected();
-    addWalletListener();
-  }, [addressWalet]);
+  // useEffect(() => {
+  //   getCurrentWalletConnected();
+  //   addWalletListener();
+  // }, [addressWalet]);
 
   const connectWallet = async ({ account }: IAccount) => {
     try {
@@ -68,8 +68,8 @@ export const UserPage = () => {
     }
   };
 
-  const connectMobileWallet = async () => {
-    if (window.ethereum && window.ethereum) {
+  const handleEthereum = async () => {
+    if (window.ethereum && window.ethereum.isMetaMask) {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -79,38 +79,56 @@ export const UserPage = () => {
       toast.warning("Please install MetaMask!");
     }
   };
-
-  const getCurrentWalletConnected = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
-      try {
+  const connectMobileWallet = async () => {
+    if (window.ethereum) {
+      if (window.ethereum && window.ethereum.isMetaMask) {
         const accounts = await window.ethereum.request({
-          method: "eth_accounts",
+          method: "eth_requestAccounts",
         });
-        if (accounts.length > 0) {
-          setAddressWallet(accounts[0]);
-        } else {
-          toast.warning("Connect to MetaMask using the Connect button");
-        }
-      } catch (err) {
-        toast.error("Connection failed");
+        const account = accounts[0];
+        connectWallet(account);
+      } else {
+        toast.warning("Please install MetaMask!");
       }
     } else {
-      /* MetaMask is not installed */
-      toast.warning("Please install MetaMask");
+      window.addEventListener("ethereum#initialized", handleEthereum, {
+        once: true,
+      });
+      setTimeout(handleEthereum, 3000);
     }
   };
 
-  const addWalletListener = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
-      window.ethereum.on("accountsChanged", ({ accounts }:IAccounts) => {
-        setAddressWallet(accounts[0]);
-      });
-    } else {
-      /* MetaMask is not installed */
-      setAddressWallet("");
-      toast.warning("Please install MetaMask");
-    }
-  };
+  // const getCurrentWalletConnected = async () => {
+  //   if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+  //     try {
+  //       const accounts = await window.ethereum.request({
+  //         method: "eth_accounts",
+  //       });
+  //       if (accounts.length > 0) {
+  //         setAddressWallet(accounts[0]);
+  //       } else {
+  //         toast.warning("Connect to MetaMask using the Connect button");
+  //       }
+  //     } catch (err) {
+  //       toast.error("Connection failed");
+  //     }
+  //   } else {
+  //     /* MetaMask is not installed */
+  //     toast.warning("Please install MetaMask");
+  //   }
+  // };
+
+  // const addWalletListener = async () => {
+  //   if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+  //     window.ethereum.on("accountsChanged", ({ accounts }: IAccounts) => {
+  //       setAddressWallet(accounts[0]);
+  //     });
+  //   } else {
+  //     /* MetaMask is not installed */
+  //     setAddressWallet("");
+  //     toast.warning("Please install MetaMask");
+  //   }
+  // };
 
   return (
     <>
