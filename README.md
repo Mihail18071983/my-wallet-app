@@ -19,5 +19,5 @@ If you try to enter incorrect values into the input fields you will get a wornin
 
 After entering correct data you will submit transaction clicking by "Transfer" button. Metamask is opened in popup window. In this window you can submit transaction or decline it. Finaly if transaction is successful you will get a corresponding message for it.
 
-<div style="color: #f00">If you want to move to the repository you just need clickking by "CRYPTO" button on the left corner of the screen.</div>
+<div style="color:#f00">If you want to move to the repository you just need clickking by "CRYPTO" button on the left corner of the screen.</div>
 
