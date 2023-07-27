@@ -21,3 +21,5 @@ After entering correct data you will submit transaction clicking by "Transfer" b
 
 <div style="color:red">If you want to move to the repository you just need clickking by "CRYPTO" button on the left corner of the screen.</div>
 
+``<span style="color:red">Text in red</span>``
+
