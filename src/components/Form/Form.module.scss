@@ -8,7 +8,7 @@
   margin-right: auto;
   background-color: #3e2755;
   border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .title {
@@ -30,15 +30,16 @@
   }
 }
 
-.address, .balance {
-margin-left: auto;
-margin-right: auto;
-text-align: center;
+.address,
+.balance {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .input {
   display: block;
-  min-width: 300px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 5px;
@@ -80,7 +81,7 @@ text-align: center;
 }
 
 .errMessage {
-color:red;
-margin: 0;
-padding: 5px 10px;
+  color: red;
+  margin: 0;
+  padding: 5px 10px;
 }

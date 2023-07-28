@@ -8,7 +8,7 @@ import { Form } from "../components/Form/Form";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { setAddress, setBalance } from "../redux/wallet.slice";
 import { toast } from "react-toastify";
-// import detectEthereumProvider from "@metamask/detect-provider";
+
 
 export const UserPage = () => {
   const dispatch = useDispatch();
@@ -94,6 +94,7 @@ export const UserPage = () => {
       setIsConnected(false);
     }
   };
+
 
   return (
     <>
