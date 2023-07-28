@@ -7,7 +7,7 @@ import { Form } from "../components/Form/Form";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { setAddress, setBalance } from "../redux/wallet.slice";
 import { toast } from "react-toastify";
-import detectEthereumProvider from "@metamask/detect-provider";
+// import detectEthereumProvider from "@metamask/detect-provider";
 
 export const UserPage = () => {
   const dispatch = useDispatch();
@@ -34,14 +34,11 @@ export const UserPage = () => {
 
   const connectWallet = async () => {
     try {
-      // const provider = await detectEthereumProvider();
+      
       const provider = new Web3Provider(window.ethereum);
       if (provider) {
         toast.success("Ethereum provider detected!");
         const { chainId } = await provider.getNetwork();
-        // const chainId = await window.ethereum.request({
-        //   method: "eth_chainId",
-        // });
         if (chainId !== 5) {
           throw new Error("Change network to Goerli");
         }
