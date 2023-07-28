@@ -2,6 +2,10 @@
 
 This is a simple application helps user to make transaction of crypto currency from user's wallet to another wallet.
 
+# my-wallet-app
+
+This is a simple application helps user to make transaction of crypto currency from user's wallet to another wallet.
+
 ## Getting started
 
 For launching application you just need moving to the https://my-wallet-app-pearl.vercel.app/
@@ -19,5 +23,5 @@ If you try to enter incorrect values into the input fields you will get a wornin
 
 After entering correct data you will submit transaction clicking by "Transfer" button. Metamask is opened in popup window. In this window you can submit transaction or decline it. Finaly if transaction is successful you will get a corresponding message for it.
 
-If you want to move to the repository you just need clickking by "CRYPTO" button on the left corner of the screen.
 
+## If you want to move to the repository you just need clickking by "CRYPTO" button on the left corner of the screen.

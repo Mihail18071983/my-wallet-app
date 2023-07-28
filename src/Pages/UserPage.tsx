@@ -33,19 +33,19 @@ export const UserPage = () => {
   }, [signer, dispatch]);
 
   const connectWallet = async () => {
-    try {  
-      const provider = await detectEthereumProvider();
-      if (provider && provider === window.ethereum) {
-          const ethresProvider = new Web3Provider(provider);
+    try {
+      // const provider = await detectEthereumProvider();
+      const provider = new Web3Provider(window.ethereum);
+      if (provider) {
         toast.success("Ethereum provider detected!");
-        // const { chainId } = await provider.getNetwork();
-        const  chainId = await window.ethereum.request({
-          method: "eth_chainId",
-        });
-        if (+chainId !== 5) {
+        const { chainId } = await provider.getNetwork();
+        // const chainId = await window.ethereum.request({
+        //   method: "eth_chainId",
+        // });
+        if (chainId !== 5) {
           throw new Error("Change network to Goerli");
         }
-        const signer = ethresProvider.getSigner();
+        const signer = provider.getSigner();
         setSigner(signer);
         setIsConnected(true);
       } else {
