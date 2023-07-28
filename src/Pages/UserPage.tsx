@@ -47,13 +47,28 @@ export const UserPage = () => {
     try {
       const provider = new Web3Provider(window.ethereum);
       if (provider) {
-       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-          if (accounts.length === 0) {
-            toast.warning(
-              "MetaMask is locked. Please unlock or connect your account."
+        let accounts;
+        try {
+          accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+        } catch (err: any) {
+          if (err.code === -32002) {
+            toast.error(
+              "Already processing account. Please check metamask extension"
             );
-            setIsConnected(false);
+            return;
+          } else {
+            throw err;
           }
+        }
+        setIsConnected(false);
+        if (accounts.length === 0) {
+          toast.warning(
+            "MetaMask is locked. Please unlock or connect your account."
+          );
+          setIsConnected(false);
+        }
         toast.success("Ethereum provider detected!");
         const { chainId } = await provider.getNetwork();
         if (chainId !== 5) {
@@ -66,7 +81,15 @@ export const UserPage = () => {
         toast.warning("Please install MetaMask!");
         setIsConnected(false);
       }
-    } catch (err) {
+    } catch (err: any) {
+      console.log("error",err);
+      if (err.code === -32002) {
+          console.log("err",err.message);
+        toast.error(
+          "Already processing account. Please check metamask extention"
+        );
+        return;
+      }
       toast.error("Error connecting wallet");
       setIsConnected(false);
     }
@@ -79,9 +102,11 @@ export const UserPage = () => {
         addressWalet={addressWalet}
         balanceWallet={balanceWallet}
       />
-      {isConnected && <div className={styles.container}>
-        <Form isConnected={isConnected} />
-      </div>}
+      {isConnected && (
+        <div className={styles.container}>
+          <Form isConnected={isConnected} />
+        </div>
+      )}
     </>
   );
 };
