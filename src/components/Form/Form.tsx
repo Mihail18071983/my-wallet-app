@@ -59,8 +59,8 @@ export const Form = ({ isConnected }: IProps) => {
         const balanceAction = fetchWalletBalance(signer);
         tx.wait()
           .then(() => dispatch(balanceAction))
-          .then(() => dispatch(setBalanceLoading(false)));
-        toast.success("Transaction successful!");
+          .then(() => dispatch(setBalanceLoading(false)))
+          .then(() => toast.success("Transaction successful!"));
       } catch (err) {
         console.error(err);
       }
