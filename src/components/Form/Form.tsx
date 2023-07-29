@@ -9,7 +9,7 @@ import { ColorRing } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../../redux/store";
 import { fetchWalletBalance } from "../../redux/wallet.slice";
-
+import { setBalanceLoading } from "../../redux/wallet.slice";
 
 const RECIPIENT_WALLET = "0xbC78292cE96C876156212069069Ef9563CdE3796";
 
@@ -51,12 +51,15 @@ export const Form = ({ isConnected }: IProps) => {
       try {
         const provider = new Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-         const tx=await signer.sendTransaction({
+        const tx = await signer.sendTransaction({
           to: recipient,
           value: parsedAmount,
-         });
+        });
+        dispatch(setBalanceLoading(true));
         const balanceAction = fetchWalletBalance(signer);
-        tx.wait().then(() => dispatch(balanceAction));
+        tx.wait()
+          .then(() => dispatch(balanceAction))
+          .then(() => dispatch(setBalanceLoading(false)));
         toast.success("Transaction successful!");
       } catch (err) {
         console.error(err);
