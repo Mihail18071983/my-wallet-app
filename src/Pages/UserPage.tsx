@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState} from "react";
+import { useState, useEffect} from "react";
 import styles from "./UserPage.module.scss";
 import { Header } from "../components/Header/Header";
 import { Form } from "../components/Form/Form";
-import {  Web3Provider } from "@ethersproject/providers";
+import {  Web3Provider, JsonRpcSigner } from "@ethersproject/providers";
 import { toast } from "react-toastify";
 import { useWallet } from "../hooks/useWallet";
 import { fetchWalletAddress, fetchWalletBalance } from "../redux/wallet.slice";
@@ -13,6 +13,28 @@ export const UserPage = () => {
   const dispatch = useAppDispatch();
   const [isConnected, setIsConnected] = useState(false);
   const { selectedAddress, selectedBalance } = useWallet();
+  const [signer, setSigner] = useState<JsonRpcSigner>();
+
+
+useEffect(() => {
+
+  const handleAccountsChanged = () => {
+    if (!signer) return;
+    dispatch(fetchWalletAddress(signer));
+    dispatch(fetchWalletBalance(signer));
+  }
+
+  if(window.ethereum) {
+    window.ethereum.on('accountsChanged', handleAccountsChanged)
+  }
+
+  return () => {
+    if(window.ethereum) {
+      window.ethereum.removeListener('accountsChanged', handleAccountsChanged)
+    }
+  }
+
+}, [dispatch, signer])
 
   const connectWallet = async () => {
     try {
@@ -46,6 +68,7 @@ export const UserPage = () => {
           throw new Error("Change network to Goerli");
         }
         const signer = provider.getSigner();
+        setSigner(signer);
         const addressAction = fetchWalletAddress(signer);
         const balanceAction = fetchWalletBalance(signer)
         dispatch(addressAction);
