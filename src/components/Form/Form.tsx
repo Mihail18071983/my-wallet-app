@@ -6,7 +6,9 @@ import { DevTool } from "@hookform/devtools";
 import { useWallet } from "../../hooks/useWallet";
 import { ethers } from "ethers";
 import { ColorRing } from "react-loader-spinner";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
+import { useAppDispatch } from "../../redux/store";
+import { fetchWalletBalance } from "../../redux/wallet.slice";
 
 
 const RECIPIENT_WALLET = "0xbC78292cE96C876156212069069Ef9563CdE3796";
@@ -16,6 +18,7 @@ type IProps = {
 };
 
 export const Form = ({ isConnected }: IProps) => {
+  const dispatch = useAppDispatch();
   const { selectedAddress, selectedBalance } = useWallet();
   const {
     register,
@@ -48,10 +51,12 @@ export const Form = ({ isConnected }: IProps) => {
       try {
         const provider = new Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-         await signer.sendTransaction({
+         const tx=await signer.sendTransaction({
           to: recipient,
           value: parsedAmount,
-        });
+         });
+        const balanceAction = fetchWalletBalance(signer);
+        tx.wait().then(() => dispatch(balanceAction));
         toast.success("Transaction successful!");
       } catch (err) {
         console.error(err);
