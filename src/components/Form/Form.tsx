@@ -40,7 +40,7 @@ export const Form = ({ isConnected }: IProps) => {
 
   useEffect(() => {
     setValue("wallet_address", RECIPIENT_WALLET);
-    setValue("amount", "0.00");
+    setValue("amount", "0.001");
   }, [selectedAddress, selectedBalance, setValue]);
 
   const onSubmitHandler = async (data: UserData) => {
@@ -106,7 +106,7 @@ export const Form = ({ isConnected }: IProps) => {
             {...register("amount", {
               required: true,
               pattern: {
-                value: /^\d+(\.\d{1,2})?$/,
+                value: /^\d+(\.\d{1,3})?$/,
                 message:
                   "Please enter a valid balance with up to two decimal places!",
               },
