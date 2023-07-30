@@ -31,6 +31,7 @@ export const Form = ({ isConnected }: IProps) => {
       wallet_address: RECIPIENT_WALLET,
       amount: "",
     },
+    mode:"onChange"
   });
 
   type UserData = {
